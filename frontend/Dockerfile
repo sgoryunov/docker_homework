@@ -1,13 +1,12 @@
-FROM node:12-alpine as builder
+FROM node:14-alpine as builder
 WORKDIR /usr/src/app
 COPY . .
-RUN apk add --no-cache bash
-RUN npm install
-EXPOSE 3000
-# RUN npm run build
-ENTRYPOINT [ "npm", "start" ]
+#RUN apk add --no-cache bash
+RUN npm install && npm run build 
+RUN npm install -g serve
+CMD [ "serve", "-s", "build" ]
 #CMD [ "bash" ]
 # FROM nginx:1.21-alpine
 # RUN apk add --no-cache bash
 # COPY --from=builder /usr/src/app/build/* /usr/share/nginx/html/
-# COPY --from=builder /usr/src/app/node_modules /usr/share/nginx/html/node_modules
+# CMD ["nginx", "-g", "daemon off;"]
