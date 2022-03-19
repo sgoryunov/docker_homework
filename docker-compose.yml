@@ -2,9 +2,28 @@
 version: '3'
 
 services:
-  front:
+  frontend:
     build: frontend
     ports:
-      - 80:3000
-    # volumes:
-    #   - ./nginx.conf:/etc/nginx/nginx.conf
+      - 3000:3000
+    depends_on:
+      - backend
+      - postgresql
+
+  backend:
+    build: lib_catalog
+    ports:
+      - "8000:8000"
+    volumes:
+      - .env:/app/.env
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:14.2
+    volumes:
+      - /var/lib/postgresql/data1:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}

@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+from dotenv import load_dotenv
 import os
 
+load_dotenv('/app/.env')
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -81,10 +83,10 @@ WSGI_APPLICATION = 'lib_catalog.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "django",
-        "USER": "django",
-        "PASSWORD": "django",
-        "HOST": "database",
+        "NAME": os.getenv('DB_NAME'), #get from .env file
+        "USER": os.getenv('DB_USER'), #get from .env file
+        "PASSWORD": os.getenv('DB_PASS'), #get from .env file
+        "HOST": "postgresql",
         "PORT": "5432",
         "CONN_MAX_AGE": None
     },
@@ -137,6 +139,9 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
+    "http://nf-100-182.jinr.ru:3000",
+    "http://frontend:3000"
+
 ]
 
 FIXTURES_DIRS = os.path.join(BASE_DIR, 'catalog/fixtures')
